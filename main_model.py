@@ -38,6 +38,14 @@ class CSDI_base(nn.Module):
             self.beta = np.linspace(
                 config_diff["beta_start"], config_diff["beta_end"], self.num_steps
             )
+        elif config_diff["schedule"] == "cosine":
+            def alpha_bar(t):
+                return np.cos((t + 0.008) / 1.008 * np.pi / 2) ** 2
+
+            timesteps = np.linspace(0, 1, self.num_steps + 1)
+            alphas_bar = alpha_bar(timesteps)
+            self.beta = 1 - (alphas_bar[1:] / alphas_bar[:-1])
+            self.beta = np.clip(self.beta, a_min=1e-8, a_max=0.999)
 
         self.alpha_hat = 1 - self.beta
         self.alpha = np.cumprod(self.alpha_hat)

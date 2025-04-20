@@ -118,7 +118,7 @@ def calc_quantile_CRPS_sum(target, forecast, eval_points, mean_scaler, scaler):
     return CRPS.item() / len(quantiles)
 
 def evaluate(model, test_loader, nsample=100, scaler=1, mean_scaler=0, foldername=""):
-
+    device = torch.device("cuda:0")
     with torch.no_grad():
         model.eval()
         mse_total = 0
@@ -132,6 +132,10 @@ def evaluate(model, test_loader, nsample=100, scaler=1, mean_scaler=0, foldernam
         all_generated_samples = []
         with tqdm(test_loader, mininterval=5.0, maxinterval=50.0) as it:
             for batch_no, test_batch in enumerate(it, start=1):
+                test_batch = {
+                k: v.to(device) if isinstance(v, torch.Tensor) else v
+                for k, v in test_batch.items()
+    }
                 output = model.evaluate(test_batch, nsample)
 
                 samples, c_target, eval_points, observed_points, observed_time = output
