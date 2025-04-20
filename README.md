@@ -1,3 +1,7 @@
+
+# Ilya Novikov
+I conducted various experiments with the data, evaluated metrics on the trained model for different missing data ratios, and explored different training configurations including quadratic, cosine, and linear noise schedules. I also experimented with different numbers of diffusion steps (T). All research information can be found in the `save` directory.
+
 # CSDI
 This is the github repository for the NeurIPS 2021 paper "[CSDI: Conditional Score-based Diffusion Models for Probabilistic Time Series Imputation](https://arxiv.org/abs/2107.03502)".
 
